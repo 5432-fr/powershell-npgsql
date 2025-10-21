@@ -1,10 +1,11 @@
 name: CI (Debug)
 on: [push, pull_request]
 
+
 jobs:
   build:
     runs-on: windows-latest
-
+    if: github.ref != 'refs/heads/main'
     steps:
 
     - uses: actions/checkout@v5
@@ -21,12 +22,8 @@ jobs:
     - name: Publish
       run: dotnet publish -p:CommitHash=${{ github.sha }} -p:CommitRef=${{ github.ref_type }}/${{ github.ref_name }} -r win-x64 -c Debug --self-contained true -o .\build
 
-    - name: Create ZIP
-      shell: powershell
-      run: Compress-Archive -Path .\build\*.dll -DestinationPath .\PowerShellNpgsql-9.0.4.zip
-
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: PowerShell Npgsql (Debug) (${{ github.sha }})
-        path: .\*.zip
+        name: PowerShell Npgsql (${{ github.ref_name }}) (${{ github.sha }})
+        path: .\build\*.dll
