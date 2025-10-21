@@ -1,0 +1,32 @@
+name: CI (Debug)
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+
+    - uses: actions/checkout@v5
+    - uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Publish
+      run: dotnet publish -p:CommitHash=${{ github.sha }} -p:CommitRef=${{ github.ref_type }}/${{ github.ref_name }} -r win-x64 -c Debug --self-contained true -o .\build
+
+    - name: Create ZIP
+      shell: powershell
+      run: Compress-Archive -Path .\build\*.dll -DestinationPath .\PowerShellNpgsql-9.0.4.zip
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: PowerShell Npgsql (Debug) (${{ github.sha }})
+        path: .\*.zip
