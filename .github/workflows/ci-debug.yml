@@ -1,6 +1,9 @@
 name: CI (Debug)
-on: [push, pull_request]
-
+on:
+  push:
+    branches:
+    - main
+  pull_request:
 
 jobs:
   build:
@@ -25,5 +28,5 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: PowerShell Npgsql (${{ github.ref_name }}) (${{ github.sha }})
+        name: PowerShell Npgsql (Test) (${{ github.sha }})
         path: .\build\*.dll
