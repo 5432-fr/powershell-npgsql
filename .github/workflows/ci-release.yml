@@ -1,0 +1,52 @@
+name: CI (Debug)
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+
+    - uses: actions/checkout@v5
+    - uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Publish
+      run: dotnet publish -p:CommitHash=${{ github.sha }} -p:CommitRef=${{ github.ref_type }}/${{ github.ref_name }} -r win-x64 -c Release --self-contained true -o .\build
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: PowerShell Npgsql (Test) (${{ github.sha }})
+        path: .\build\*.dll
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Create ZIP file
+        uses: thedoctor0/zip-release@0.7.5
+        with:
+          type: 'zip'
+          directory: '.\build'
+          filename: PowerShellNpgsql-${{ github.ref_name }}.zip
+          exclusions: '*.git* .editorconfig'        
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: PowerShellNpgsql-${{ github.ref_name }}.zip
+          name: PowerShellNpgsql-${{ github.ref_name }}
