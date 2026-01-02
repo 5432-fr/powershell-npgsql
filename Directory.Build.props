@@ -1,11 +1,11 @@
 <Project>
   <PropertyGroup>
-    <Version>9.0.4</Version>
-    <FileVersion>9.0.4</FileVersion>
-    <AssemblyVersion>9.0.4</AssemblyVersion>
+    <Version>10.0.1</Version>
+    <FileVersion>10.0.1</FileVersion>
+    <AssemblyVersion>10.0.1</AssemblyVersion>
     <Company>Mirounga</Company>
     <Authors>Christophe CHAUVET</Authors>
-    <Copyright>Copyright© Christophe CHAUVET 2025</Copyright>
+    <Copyright>Copyright© Christophe CHAUVET 2025-2026</Copyright>
     <PackageProjectUrl>https://5432.fr</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/5432-fr/powershell-npgsql</RepositoryUrl>
