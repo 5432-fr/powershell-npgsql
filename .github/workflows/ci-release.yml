@@ -37,6 +37,12 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
 
     steps:
+      - name: Récupérer les fichiers build
+        uses: actions/download-artifact@v4
+        with:
+          name: PowerShell Npgsql (Test) (${{ github.sha }})
+          path: build/                # Où extraire les fichiers
+
       - name: Create ZIP file
         uses: thedoctor0/zip-release@0.7.5
         with:
