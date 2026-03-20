@@ -26,9 +26,9 @@ jobs:
       run: dotnet publish -p:CommitHash=${{ github.sha }} -p:CommitRef=${{ github.ref_type }}/${{ github.ref_name }} -r win-x64 -c Release --self-contained true -o .\build
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
-        name: PowerShell Npgsql (Test) (${{ github.sha }})
+        name: powershell-build
         path: .\build\*.dll
 
   release:
@@ -38,9 +38,9 @@ jobs:
 
     steps:
       - name: Récupérer les fichiers build
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
-          name: PowerShell Npgsql (Test) (${{ github.sha }})
+          name: powershell-build
           path: build/                # Où extraire les fichiers
 
       - name: Create ZIP file
