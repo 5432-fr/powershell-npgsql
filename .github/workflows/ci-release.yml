@@ -47,7 +47,7 @@ jobs:
         uses: thedoctor0/zip-release@0.7.5
         with:
           type: 'zip'
-          directory: '.\build'
+          directory: 'build'
           filename: PowerShellNpgsql-${{ github.ref_name }}.zip
           exclusions: '*.git* .editorconfig'        
 
